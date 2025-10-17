@@ -1,0 +1,176 @@
+// 01. Arithmetic
+console.log(100 + 4 * 11); // + and * are operators
+console.log(144 % 12); // 0 is the remainder
+console.log(314 % 100); // 14 is the remainder
+
+// % - remainder operator or modulo operator precedence is the same as 
+// that of multiplication and division.
+
+// 02. Special numbers - In Js, They are 3 special values considered as numbers 
+// but they don't behave like normal numbers.
+
+console.log(Infinity); // positive infinites.
+console.log(-Infinity); // negative infinities.
+console.log(NaN); // Not a number
+
+// 03. Strings
+console.log(`Down on the sea`); // backtick-quoted strings usually called template literals.
+console.log("Lie on the ocean");
+console.log("Float on the ocean");
+
+// (\) - backslash
+// If need to add quote between quotes (``) or (\) character can be used.
+
+// Example
+// step-1:
+console.log("The quick brown fox jumps over the lazy dogs"); // without adding quote between quotes.
+
+// step-2:
+// console.log("The quick brown fox "jumps" over the lazy dogs"); // not valid - throw error.
+
+// step-3:
+console.log('The quick brown fox \"jumps\" over the lazy dogs'); // valid - quotes added.
+
+// Bonus example:
+console.log("The quick brown fox \'jumps\' over the lazy dogs");
+// Using single quotes or double quotes depends on what we need to espace between quotes.
+
+console.log("This is the first line\nAnd this is a second line"); // \n - gives newline
+// This is the first line
+// And this is the second
+
+console.log("This is the first line\tAnd this is a second line"); // \t - gives tab space.
+
+// 04. Concatenate
+console.log("con" + "cat" + "e" + "nate");
+
+// 05. Binary and Unary operators
+// Operators that use two values are called binary
+// operators, while those that take one are called unary operators. 
+console.log(typeof (5)); // typeof is an unary operator.
+console.log(- (10 - 2)); // - is a binary operator, it takes two values.
+
+// 06. Boolean values
+console.log(3 > 2); // true
+console.log(3 < 2); // false
+
+// < and > - Binary opertors
+// This can be used for comparing strings as like numbers.
+// Uppercase letters are always "lesser" than Lowercase letters and Non-alphabetic characters (!, -, and so on)
+// When comparing strings, JavaScript goes over the
+// characters from left to right, comparing the Unicode codes one by one are also
+// included in the ordering.
+
+// Some other binary operators are >= , <=, ==, !=
+console.log(NaN == NaN); // false // There is only one value in Js not equal to itself.
+
+// NaN is supposed to denote the result of a nonsensical computation. and as such,
+// it isn’t equal to the result of any other nonsensical computations.
+
+// 07. Logical opertors - AND, OR, NOT
+// AND - &&
+console.log(true && false); // false
+console.log(true && true); // true
+
+// OR - ||
+console.log(false || true); // true
+console.log(true || false); // true
+console.log(false || false); // false
+
+// NOT - !
+console.log(!false);
+console.log(!true);
+
+// || (OR) has the lowest precedence, then comes &&, then the 
+// comparison operators(>, ==, and so on),
+// and then the rest.
+
+console.log(1 + 1 == 2 && 10 * 10 > 50); // true
+
+// 08. Ternary operators - It is operating on three values. Also called conditional operator.
+console.log(true ? 1 : 2); // 1
+console.log(false ? 1 : 2); // 2
+
+// 09. Empty values - null, undefined
+// There are two special values, written null and undefined.
+// They denote the absence of meaningful value.
+
+// Many operations in the language that don’t produce a meaningful value yield
+// undefined simply because they have to yield some value.
+
+// 10. Automatic Type conversion.
+console.log(8 * null); // 0 // null becomes 0 and multiplied with 8
+console.log("5" - 1); // 4 // "5" becomes 5 (number)
+console.log("5" + 1); // 51 "+" tries concatenation before addition. So, 1 becomes "1"
+console.log("five" * 2); // NaN
+console.log(false == 0); // true
+console.log("five" * undefined); // NaN
+
+// When an operator is applied to the "wrong" type of value. Js will quietly 
+// convert that value to the type it needs, using a set of rules that often aren't
+// what you want or expect. This is called "Type coercion" 
+
+console.log(null == undefined); // true 
+console.log(null == null); // true 
+console.log(undefined == undefined); // true 
+console.log(null == 0); // false
+// In most cases, it tries to convert one of the values to the other value's type. 
+// If null or undefined occurs on either side of the operator, it produces true.
+
+console.log(false == 0); // true
+console.log(false == ""); // true // Type conversion happens so we get true value.
+
+// Strict comparison with === and !== 
+// === it compares a value is precisely equal to the other.
+// !== it compares a value is not precisely equal.
+
+// 11. Short-circuiting of logical operators - || and &&
+// || - It will convert the value on their left side to 'Boolean' type.
+// The || operator, for example, will return the value to its left when that
+// value can be converted to true and will return the value on its right otherwise.
+
+console.log(true || false); // true
+console.log(false || true); // true
+console.log("Agnes" || "user"); // "Agnes"
+
+// We can use this functionality as a way to fall back on a default value. If you
+// have a value that might be empty, you can put || after it with a replacement
+// value. If the initial value can be converted to false, you’ll get the replacement
+// instead.
+
+// Example:
+console.log(null || "user"); // "user"
+
+// The rules for converting strings and numbers to Boolean values state
+// that 0, NaN, and the empty string ("") count as false, while all the other values
+// count as true.
+
+console.log(0 || -1); // -1
+console.log("" || "!?"); // !?
+console.log(0 || 100); // 100
+
+// The ?? operator resembles || but returns the value on the right only if the
+// one on the left is null or undefined, not if it is some other value that can be
+// converted to false.
+
+console.log(0 ?? -1); // 0 // here 0 is not converted to false, only -
+console.log(0 ?? 100); // 0 // - when null or undefined occurs left side it returns right side value.
+
+// && operator
+// It works similarly but the other way around. When the value to
+// its left is something that converts to false, it returns that value, and otherwise
+// it returns the value on its right.
+
+console.log(false && true); // false
+console.log(true && false); // false
+
+// Another important property of these two operators is that the part to their
+// right is evaluated only when necessary.
+
+// Example:
+console.log(true || 'x'); // true // 'x' is never evaluated.
+console.log(false && 'x'); // false // 'x' is never evaluated, 'x' will be ignored.
+
+// This is called short-circuit evaluation.
+// The conditional operator works in a similar way. Of the second and third
+// values, only the one that is selected is evaluated.
