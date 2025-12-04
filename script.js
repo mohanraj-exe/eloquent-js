@@ -644,8 +644,31 @@ class List {
     }
 }
 
-let list = List.fromArray([1, 2, 3]);
+let list = List.fromArray([1, 2, 3, 4, 5, "h", "e", "l", "l", "o"]);
 console.log(list);
+// console.log(list.length);
+// Recursion inside class List
+
+// 1
+// this = list
+// let list = { value: 1, rest: { value: 2, rest: { value: 3, rest: null }}}; 
+// this.rest = { value: 2, rest: { value: 3, rest: null }}; // node2 -> node which has value 2
+// return 1 + (node2.length);
+// node2.length calling a getter function length again in an object
+
+// 2
+// this.rest = { value: 3, rest: null }; // node3 -> node which has value 3
+// return 1 + (1 + node3.length);
+// node3.length calling a getter function length again in an object
+
+// 3
+// this.rest = null;
+// return 1 + (1 + (1 + 0));
+// if this.rest is null or not exists 0, so it returns 1 + 0 = 1;
+
+// finally 
+// return 1 + (1 + (1 + 0)); // 3
+
 
 // class ListIterator {
 //     constructor(list) {
