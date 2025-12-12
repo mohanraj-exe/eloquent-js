@@ -644,8 +644,8 @@ class List {
     }
 }
 
-let list = List.fromArray([1, 2, 3, 4, 5, "h", "e", "l", "l", "o"]);
-console.log(list);
+// let list = List.fromArray([1, 2, 3, 4, 5, "h", "e", "l", "l", "o"]);
+// console.log(list);
 // console.log(list.length);
 // Recursion inside class List
 
@@ -670,19 +670,295 @@ console.log(list);
 // return 1 + (1 + (1 + 0)); // 3
 
 
-// class ListIterator {
-//     constructor(list) {
-//         this.list = list;
-//     }
+class ListIterator {
+    constructor(list) {
+        this.list = list;
+    }
 
-//     next() {
-//         if (this.list == null) {
-//             return { done: true };
-//         }
+    next() {
+        if (this.list == null) {
+            console.log({ done: true });
+            return { done: true };
+        }
 
-//         let value = this.list.value;
-//         this.list = this.list.rest;
-//         return { value, done: false };
+        let value = this.list.value;
+        this.list = this.list.rest;
+        console.log({ value, done: false });
+        return { value, done: false };
+    }
 
-//     }
-// }
+}
+
+// The class tracks the progress of iterating through the list by updating its list properly to move to
+// the next list object whenever a value is returned and reports that it is done when that list is empty (null).
+
+List.prototype[Symbol.iterator] = function () {
+    // console.log(this);
+    return new ListIterator(this);
+}
+
+let list = List.fromArray([1, 2, 3]);
+console.log(list);
+
+for (const element of list) {
+    console.log(element);
+}
+
+console.log([..."PCI"]);
+// → ["P", "C", "I"]
+
+// Inheritance:
+// A new type is based on an old type.
+// It automatically gets:
+// Methods
+// Structure
+
+// But can:
+// Change behavior.
+// Add new features.
+
+class LengthList extends List {
+    #length;
+
+    constructor(value, rest) {
+        super(value, rest);
+        this.#length = super.length;
+    }
+
+    get length() {
+        return this.#length;
+    }
+}
+
+let lengthList = LengthList.fromArray([1, 2, 3]).length;
+
+// The InstanceOf operator
+// It is occasionally useful to know whether an object was derived from a specific class.
+// For this, Js provides a binary operator called instanceof.
+
+console.log(new LengthList(1, null) instanceof LengthList); // true
+console.log(new LengthList(2, null) instanceof List); // true
+console.log(new List(3, null) instanceof LengthList); // false
+console.log([1] instanceof Array); // true
+console.log({} instanceof Object); // true
+console.log(Object.getPrototypeOf({}));
+
+// ------------------------------------
+
+class A { }
+// class B extends A { }
+class B { }
+class C extends B { }
+
+let obj9 = new C();
+console.log("obj9:", Object.getPrototypeOf(obj9));
+// console.log("compare:", Object.getPrototypeOf(obj9) === C.prototype);
+
+let obj8 = new B();
+console.log("obj8:", Object.getPrototypeOf(obj8));
+
+// let obj7 = new A();
+// console.log("obj7:", Object.getPrototypeOf(obj7));
+
+// Note - important:
+// An object belongs to a class if its prototype chain contains that class's prototype. 
+console.log(new C() instanceof C); // true
+console.log(Object.getPrototypeOf(new C()) == C.prototype);
+
+console.log(new C() instanceof A); // false
+
+// Behavior based, not origin based:
+// Js cares about:
+
+// What behavior the object has access to.
+// Not how it was created.
+
+// That's why it works:
+let fake = Object.create(C.prototype);
+// console.log(fake);
+console.log(fake instanceof C); // true
+
+// Even though new C()
+// No constructor ran
+
+
+// Exercises:
+// A VECTOR TYPE
+
+class Vec {
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    get length() {
+        return `${Math.round(Math.sqrt(this.x * this.x + this.y * this.y))} km`;
+    }
+}
+
+Vec.prototype.plus = function (a1, b1) {
+    return { i: (this.x + a1), j: (this.y + b1) };
+};
+
+Vec.prototype.minus = function (a2, b2) {
+    return { i: (this.x - a2), j: (this.y - b2) };
+}
+
+console.log(new Vec(1, 2).plus(1, 2));
+console.log(new Vec(1, 2).plus(1, -3));
+console.log(new Vec(1, 2).minus(1, -4));
+console.log(new Vec(1, 1).length);
+
+// GROUPS
+
+// Set - An another data structure called Map. Like an instance of Map, a set holds a collection of values.
+// Unlike Map, it does not associate other values with those - it just tracks which values are part of the set.
+
+let newSet = new Set();
+console.log(newSet);
+console.log(newSet.add(1));
+console.log(newSet.add(2));
+console.log(newSet.add(3));
+console.log(newSet.add(1));
+console.log(newSet.add([7, 8, 9]));
+console.log(newSet.add({ name: 'alex', age: 20 }));
+
+console.log(newSet.delete(1));
+console.log(newSet.delete(5));
+console.log(newSet.has(4));
+console.log(newSet);
+
+
+// ------------------------------------
+// My solution:
+class Group {
+    constructor(group) {
+        this.group = group;
+    }
+
+    static from(collection) {
+        let arr = [];
+        for (const element of collection) {
+            // console.log("element:", element);
+            arr.push(element);
+        }
+
+        return new Group(arr);
+    }
+}
+
+Group.prototype.add = function (value) {
+    let found = this.group.includes(value);
+    if (!found) this.group.push(value);
+    return this.group;
+}
+
+Group.prototype.delete = function (value) {
+    let indexToRemove = this.group.indexOf(value);
+    this.group.splice(indexToRemove, 1);
+    return this.group;
+}
+
+Group.prototype.has = function (value) {
+    let found = this.group.includes(value);
+    if (found) return true;
+    else return false;
+}
+
+let sampleArr = [50, 60, 70];
+
+let group = Group.from([10, 20]);
+console.log(group);
+
+console.log(group.add(30));
+console.log(group.add(20));
+console.log(group.add(30));
+console.log(group.add({ name: 'alex', age: 20 }));
+console.log(group.add(sampleArr));
+console.log(group.add([50, 60, 70]));
+console.log(group.delete(10));
+console.log(group.has(20));
+console.log(group.has(sampleArr));
+
+// Author's solution:
+class GroupA {
+
+    // An alternate way of defining the constructor
+    // Instance automatically creates a property (#members = [])
+    #members = [];
+
+    // Conventional way of writing
+    // constructor() {
+    //     this.#members = []
+    // }
+
+    add(value) {
+        if (!this.has(value)) {
+            this.#members.push(value);
+        }
+    }
+
+    delete(value) {
+        this.#members = this.#members.filter(item => item !== value);
+    }
+
+    has(value) {
+        return this.#members.includes(value);
+    }
+
+    static from(collection) {
+        let group = new GroupA();
+
+        for (const element of collection) {
+            // console.log("element:", element);
+            group.add(element);
+        }
+
+        return group;
+    }
+
+    // Skipping 'next' method and makes array iterable directly.
+    // [Symbol.iterator]() {
+    //     this.#members[Symbol.iterator]()
+    // }
+
+    [Symbol.iterator]() {
+        return new GroupIterator(this.#members);
+    }
+}
+
+let group1 = GroupA.from([10, 20]);
+console.log(group1.has(10)); // true
+console.log(group1.has(30)); // false
+group1.add(10); // it doesn't added, because it is already exists.
+group1.delete(10); // the passed argument in the #members array is deleted.
+console.log(group1.has(10)); // false
+
+// // ITERABLE GROUPS
+
+class GroupIterator {
+    #members;
+    #position;
+
+    constructor(members) {
+        this.#members = members;
+        this.#position = 0;
+    }
+
+    next() {
+        if (this.#position >= this.#members.length) {
+            return { done: true };
+        }
+        
+        let value = this.#members[this.#position];
+        this.#position += 1;
+        return { value, done: false };
+    }
+}
+
+let group2 = GroupA.from(["1", "2", "3", false, null]);
+// console.log("group2:", group2);
+
+for (const element of group2) {
+    console.log(element);
+}
